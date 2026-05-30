@@ -235,7 +235,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(94,174,232,.06);padding
 </head>
 <body>
 
-<nav>
+<div id="mainSite"><nav>
   <div class="nav-brand">
     <span class="nav-logo">CLA<span class="cx">R</span>IX</span>
     <span class="nav-sep"></span>
@@ -543,7 +543,1313 @@ footer{background:var(--dark2);border-top:1px solid rgba(94,174,232,.06);padding
     <span class="f-name">CLA<span class="cx">R</span>IX</span>
   </div>
   <div class="f-copy">© 2026 Clarix — Analytické a designové studio &nbsp;·&nbsp; clarix.cz</div>
+  <div style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--blue);cursor:pointer;user-select:none;opacity:.5" onclick="openStudio()">©</div>
 </footer>
+<div id="studioOverlay" style="display:none;position:fixed;inset:0;background:rgba(8,12,16,.97);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:.15em;color:#F0F6FC">CLA<span style="color:#5EAEE8">R</span>IX <span style="font-weight:300;font-size:1rem;letter-spacing:.3em;color:#4A6A84">// STUDIO</span></div>
+  <input id="studioPass" type="password" placeholder="Heslo..." style="background:rgba(94,174,232,.06);border:1px solid rgba(94,174,232,.2);color:#F0F6FC;padding:.75rem 1.5rem;font-family:'Barlow',sans-serif;font-size:1rem;outline:none;text-align:center;letter-spacing:.2em;width:220px" onkeydown="if(event.key==='Enter')checkPass()">
+  <button onclick="checkPass()" style="background:#5EAEE8;color:#080C10;border:none;padding:.65rem 2rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;cursor:pointer">Vstoupit →</button>
+  <div id="studioErr" style="font-family:'DM Mono',monospace;font-size:.65rem;color:#E85E5E;display:none">Nesprávné heslo</div>
+  <div onclick="closeStudio()" style="font-family:'DM Mono',monospace;font-size:.6rem;color:#4A6A84;cursor:pointer;letter-spacing:.1em">× zavřít</div>
+</div>
+<script>
+function exitStudio(){document.getElementById("studioModal").style.display="none";document.body.style.overflow="";}
+function openStudio(){
+  const o=document.getElementById('studioOverlay');
+  o.style.display='flex';
+  setTimeout(()=>document.getElementById('studioPass').focus(),100);
+}
+function closeStudio(){
+  document.getElementById('studioOverlay').style.display='none';
+  document.getElementById('studioPass').value='';
+  document.getElementById('studioErr').style.display='none';
+}
+function checkPass(){
+  if(document.getElementById('studioPass').value==='0868'){
+    document.getElementById('studioOverlay').style.display='none';
+    document.getElementById('mainSite').style.display='none';
+    document.getElementById('studioApp').style.display='block';
+    showScreen('homeScreen');
+  } else {
+    document.getElementById('studioErr').style.display='block';
+    document.getElementById('studioPass').value='';
+  }
+}
+</script>
 
+
+</div>
+<!-- STUDIO APP -->
+<div id="studioApp" style="display:none">
+<style>
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#5EAEE8;--blue-lt:#A8D4F5;--blue-dk:#2A7FBF;
+  --dark:#080C10;--dark2:#0C1118;--dark3:#101820;
+  --card:#0F1620;--card2:#131C28;
+  --white:#F0F6FC;--silver:#8BA8C0;--dim:#4A6A84;--text:#C0C8D4;
+  --green:#4CAF7D;--amber:#F0A500;--red:#E85E5E;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(94,174,232,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(94,174,232,.018) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;position:relative;z-index:1}
+.screen.active{display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+.hdr{padding:1.4rem 2.5rem;border-bottom:1px solid rgba(94,174,232,.1);display:flex;justify-content:space-between;align-items:center;background:rgba(8,12,16,.97);position:sticky;top:0;z-index:100}
+.hdr-brand{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:.15em;color:var(--white)}
+.hdr-brand span{color:var(--blue)}
+.hdr-info{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:var(--dim)}
+.hdr-back{background:transparent;border:1px solid rgba(94,174,232,.2);color:var(--silver);padding:.4rem 1rem;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.2em;cursor:pointer;transition:all .3s}
+.hdr-back:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── HOME SCREEN ── */
+#homeScreen{align-items:center;justify-content:center;padding:3rem 2rem}
+.home-logo{font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;letter-spacing:.1em;color:var(--white);text-align:center;margin-bottom:.5rem}
+.home-logo span{color:var(--blue)}
+.home-sub{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.35em;color:var(--dim);text-align:center;margin-bottom:4rem}
+.home-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:800px;width:100%}
+.home-card{background:var(--card);border:1px solid rgba(94,174,232,.1);padding:3rem 2.5rem;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.home-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--blue),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.home-card:hover{background:var(--card2);border-color:rgba(94,174,232,.3);transform:translateY(-3px)}
+.home-card:hover::before{transform:scaleX(1)}
+.home-card-icon{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--blue);margin-bottom:1.5rem}
+.home-card-title{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--white);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.75rem;line-height:1}
+.home-card-desc{font-size:.85rem;color:var(--silver);line-height:1.7}
+.home-card-arrow{position:absolute;bottom:2rem;right:2rem;font-size:1.5rem;color:var(--blue);opacity:.4;transition:all .3s}
+.home-card:hover .home-card-arrow{opacity:1;transform:translateX(5px)}
+
+/* ── SETUP SCREEN ── */
+#setupScreen{padding:0}
+.setup-body{max-width:760px;margin:0 auto;padding:3rem 2rem}
+.setup-title{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:700;color:var(--white);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.4rem}
+.setup-title em{font-style:italic;font-weight:300;color:var(--blue);text-transform:none}
+.setup-sub{font-size:.88rem;color:var(--silver);margin-bottom:2.5rem;line-height:1.7}
+
+.form-group{margin-bottom:1.5rem}
+.form-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--blue);margin-bottom:.5rem;display:block}
+.form-input{width:100%;background:rgba(94,174,232,.04);border:1px solid rgba(94,174,232,.15);color:var(--white);padding:.75rem 1rem;font-family:'Barlow',sans-serif;font-size:.95rem;font-weight:300;outline:none;transition:border-color .3s}
+.form-input:focus{border-color:var(--blue);background:rgba(94,174,232,.07)}
+.form-input::placeholder{color:var(--dim)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* Level selector */
+.level-selector{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.level-card{border:1px solid rgba(94,174,232,.15);padding:1.5rem;cursor:pointer;transition:all .3s;position:relative}
+.level-card.selected{border-color:var(--blue);background:rgba(94,174,232,.06)}
+.level-card::after{content:'';position:absolute;top:.75rem;right:.75rem;width:10px;height:10px;border-radius:50%;border:1px solid var(--dim);transition:all .3s}
+.level-card.selected::after{background:var(--blue);border-color:var(--blue)}
+.level-tag{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.2em;color:var(--blue);margin-bottom:.5rem}
+.level-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.level-desc{font-size:.78rem;color:var(--silver);line-height:1.6}
+.level-count{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--dim);margin-top:.75rem}
+
+.btn-start{width:100%;background:var(--blue);color:var(--dark);border:none;padding:1rem;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:1rem}
+.btn-start:hover{background:var(--blue-lt)}
+
+/* ── GUIDE SCREEN ── */
+#guideScreen{padding:0}
+.guide-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 57px)}
+
+/* Sidebar */
+.guide-sidebar{background:var(--dark2);border-right:1px solid rgba(94,174,232,.08);padding:1.5rem 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto}
+.sidebar-section{margin-bottom:.25rem}
+.sidebar-cat{padding:.6rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:space-between;border-left:2px solid transparent}
+.sidebar-cat:hover{color:var(--silver);background:rgba(94,174,232,.03)}
+.sidebar-cat.active{color:var(--blue);border-left-color:var(--blue);background:rgba(94,174,232,.05)}
+.sidebar-cat.done{color:var(--green)}
+.sidebar-cat.done .cat-check{color:var(--green)}
+.cat-check{font-size:.7rem;opacity:.5}
+.sidebar-cat.done .cat-check{opacity:1}
+
+/* Timer */
+.timer-box{margin:1.5rem;border:1px solid rgba(94,174,232,.12);padding:1rem;text-align:center}
+.timer-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.15em;color:var(--dim);margin-bottom:.3rem}
+.timer-display{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--white);letter-spacing:.05em}
+.timer-display.warning{color:var(--amber)}
+.timer-display.urgent{color:var(--red)}
+.timer-bar{height:3px;background:rgba(94,174,232,.1);margin-top:.75rem;position:relative;overflow:hidden}
+.timer-fill{height:100%;background:var(--blue);transition:width 1s linear;width:100%}
+.timer-fill.warning{background:var(--amber)}
+.timer-fill.urgent{background:var(--red)}
+
+/* Score preview */
+.score-box{margin:0 1.5rem 1.5rem;border:1px solid rgba(94,174,232,.08);padding:1rem}
+.score-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.15em;color:var(--dim);margin-bottom:.5rem}
+.score-val{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;color:var(--blue)}
+.score-bar{height:4px;background:rgba(94,174,232,.1);margin-top:.5rem;border-radius:2px;overflow:hidden}
+.score-fill{height:100%;background:linear-gradient(to right,var(--blue),var(--green));transition:width .5s ease}
+
+/* Progress */
+.progress-box{margin:0 1.5rem 1rem}
+.progress-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;color:var(--dim);margin-bottom:.4rem;display:flex;justify-content:space-between}
+.progress-track{height:3px;background:rgba(94,174,232,.1);overflow:hidden}
+.progress-fill{height:100%;background:var(--blue);transition:width .3s ease}
+
+/* Guide main */
+.guide-main{padding:2.5rem;overflow-y:auto;height:calc(100vh - 57px)}
+.cat-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(94,174,232,.08)}
+.cat-num{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:var(--blue);margin-bottom:.5rem}
+.cat-title{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--white);letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.cat-desc{font-size:.85rem;color:var(--silver);margin-top:.5rem;line-height:1.7}
+
+/* Questions */
+.q-item{background:var(--card);border:1px solid rgba(94,174,232,.06);margin-bottom:1rem;transition:border-color .3s}
+.q-item:hover{border-color:rgba(94,174,232,.15)}
+.q-item.answered{border-color:rgba(94,174,232,.2)}
+.q-top{padding:1rem 1.2rem .5rem;display:flex;align-items:flex-start;gap:.75rem}
+.q-num{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--blue);flex-shrink:0;margin-top:.15rem;opacity:.6}
+.q-text{font-size:.9rem;color:var(--white);line-height:1.6;flex:1}
+.q-bottom{padding:.5rem 1.2rem 1rem 2.8rem}
+.q-answer{width:100%;background:rgba(94,174,232,.03);border:1px solid rgba(94,174,232,.08);color:var(--white);padding:.6rem .8rem;font-family:'Barlow',sans-serif;font-size:.85rem;font-weight:300;outline:none;resize:vertical;min-height:55px;line-height:1.6;transition:border-color .3s}
+.q-answer:focus{border-color:var(--blue);background:rgba(94,174,232,.05)}
+.q-answer::placeholder{color:var(--dim);font-size:.8rem}
+.q-note-toggle{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:var(--dim);cursor:pointer;margin-top:.4rem;display:inline-block;transition:color .3s}
+.q-note-toggle:hover{color:var(--blue)}
+.q-note{width:100%;background:rgba(255,193,7,.03);border:1px solid rgba(255,193,7,.1);color:var(--amber);padding:.5rem .8rem;font-family:'Barlow',sans-serif;font-size:.78rem;font-weight:300;outline:none;resize:vertical;min-height:40px;margin-top:.4rem;display:none}
+.q-note.visible{display:block}
+.q-note::placeholder{color:rgba(240,165,0,.3);font-size:.75rem}
+
+/* Category nav */
+.cat-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(94,174,232,.08)}
+.btn-nav{background:transparent;border:1px solid rgba(94,174,232,.2);color:var(--silver);padding:.65rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.2em;cursor:pointer;transition:all .3s}
+.btn-nav:hover{border-color:var(--blue);color:var(--blue)}
+.btn-nav.primary{background:var(--blue);color:var(--dark);border-color:var(--blue)}
+.btn-nav.primary:hover{background:var(--blue-lt)}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── SUMMARY SCREEN ── */
+#summaryScreen{padding:0}
+.summary-body{max-width:900px;margin:0 auto;padding:3rem 2rem}
+.summary-hero{background:var(--card);border:1px solid rgba(94,174,232,.15);padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.summary-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),transparent)}
+.summary-title{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.summary-client{font-size:.9rem;color:var(--silver);margin-bottom:1.5rem}
+.summary-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.stat-box{text-align:center;padding:.75rem;background:var(--dark2);border:1px solid rgba(94,174,232,.08)}
+.stat-n{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--blue);line-height:1}
+.stat-l{font-size:.7rem;color:var(--dim);margin-top:.2rem}
+
+/* Score card */
+.score-card{background:var(--card2);border:1px solid rgba(94,174,232,.12);padding:2rem;margin-bottom:2rem}
+.score-card-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:600;color:var(--white);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem}
+.score-main{display:flex;align-items:center;gap:2rem;margin-bottom:1.5rem}
+.score-circle{width:80px;height:80px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.score-number{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--blue)}
+.score-factors{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;flex:1}
+.score-factor{display:flex;align-items:center;justify-content:space-between;padding:.4rem .6rem;background:rgba(94,174,232,.04);font-size:.78rem}
+.score-factor-name{color:var(--silver)}
+.score-factor-val{font-family:'DM Mono',monospace;font-size:.65rem}
+.score-factor-val.good{color:var(--green)}
+.score-factor-val.mid{color:var(--amber)}
+.score-factor-val.bad{color:var(--red)}
+.score-comment{font-size:.85rem;color:var(--text);line-height:1.7;padding:1rem;background:rgba(94,174,232,.03);border-left:2px solid var(--blue)}
+
+/* Next meeting */
+.next-meeting{background:var(--card);border:1px solid rgba(94,174,232,.1);padding:1.5rem;margin-bottom:2rem;display:flex;align-items:center;gap:1.5rem}
+.next-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:var(--blue);margin-bottom:.4rem}
+.next-date-input{background:rgba(94,174,232,.04);border:1px solid rgba(94,174,232,.15);color:var(--white);padding:.5rem .8rem;font-family:'Barlow',sans-serif;font-size:.9rem;outline:none;transition:border-color .3s}
+.next-date-input:focus{border-color:var(--blue)}
+.next-note-input{flex:1;background:rgba(94,174,232,.04);border:1px solid rgba(94,174,232,.15);color:var(--white);padding:.5rem .8rem;font-family:'Barlow',sans-serif;font-size:.85rem;outline:none;transition:border-color .3s}
+.next-note-input:focus{border-color:var(--blue)}
+.next-note-input::placeholder{color:var(--dim)}
+
+/* Action buttons */
+.action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn-action{padding:1.1rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;transition:all .3s;border:none;display:flex;align-items:center;justify-content:center;gap:.75rem}
+.btn-pdf{background:var(--dark2);color:var(--blue);border:1px solid rgba(94,174,232,.3)}
+.btn-pdf:hover{background:rgba(94,174,232,.08);border-color:var(--blue)}
+.btn-analyze{background:var(--blue);color:var(--dark)}
+.btn-analyze:hover{background:var(--blue-lt)}
+
+/* Responsive */
+@media(max-width:768px){
+  .home-cards{grid-template-columns:1fr}
+  .guide-layout{grid-template-columns:1fr}
+  .guide-sidebar{position:static;height:auto}
+  .summary-stats{grid-template-columns:1fr 1fr}
+  .action-buttons{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .level-selector{grid-template-columns:1fr}
+}
+
+</style>
+
+
+<!-- PASSWORD SCREEN -->
+<div class="screen active" id="passScreen" style="align-items:center;justify-content:center;min-height:100vh">
+  <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.5rem">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:800;letter-spacing:.12em;color:#F0F6FC">CLA<span style="color:#5EAEE8">R</span>IX</div>
+    <div style="font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.3em;color:#4A6A84">// ANALYTICKÝ PRŮVODCE</div>
+    <input id="passInput" type="password" placeholder="Heslo..." style="background:rgba(94,174,232,.06);border:1px solid rgba(94,174,232,.2);color:#F0F6FC;padding:.75rem 1.5rem;font-family:'Barlow',sans-serif;font-size:1rem;outline:none;text-align:center;letter-spacing:.2em;width:220px;margin-top:1rem" onkeydown="if(event.key==='Enter')checkStudioPass()">
+    <button onclick="checkStudioPass()" style="background:#5EAEE8;color:#080C10;border:none;padding:.7rem 2.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;cursor:pointer">Vstoupit →</button>
+    <div id="passErr" style="font-family:'DM Mono',monospace;font-size:.65rem;color:#E85E5E;display:none">Nesprávné heslo</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- HOME SCREEN -->
+<!-- ═══════════════════════════════════ -->
+<div class="screen" id="homeScreen">
+  <div class="hdr">
+    <div class="hdr-brand">CLA<span>R</span>IX</div>
+    <div class="hdr-info">// ANALYTICKÝ PRŮVODCE</div>
+    <div style="width:80px"></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem">
+    <div class="home-logo">CLA<span>R</span>IX</div>
+    <div class="home-sub">// ANALYTICKÝ PRŮVODCE SCHŮZKOU</div>
+    <div class="home-cards">
+      <div class="home-card" onclick="selectType('stavajici')">
+        <div class="home-card-icon">// 01</div>
+        <div class="home-card-title">Stávající<br>byznys</div>
+        <div class="home-card-desc">Analýza fungující firmy která chce růst, změnu nebo zlepšení výsledků.</div>
+        <div class="home-card-arrow">→</div>
+      </div>
+      <div class="home-card" onclick="selectType('novy')">
+        <div class="home-card-icon">// 02</div>
+        <div class="home-card-title">Nový<br>byznys</div>
+        <div class="home-card-desc">Analýza nápadu nebo záměru před vstupem na trh. Ověření životaschopnosti.</div>
+        <div class="home-card-arrow">→</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- SETUP SCREEN -->
+<!-- ═══════════════════════════════════ -->
+<div class="screen" id="setupScreen">
+  <div class="hdr">
+    <div class="hdr-brand">CLA<span>R</span>IX</div>
+    <div class="hdr-info" id="setupHdrInfo">// NOVÁ ANALÝZA</div>
+    <div style="display:flex;gap:.75rem"><button class="hdr-back" onclick="goBackToSite()">✕ Web</button><button class="hdr-back" onclick="goHome()">← Zpět</button></div>
+  </div>
+  <div class="setup-body">
+    <h1 class="setup-title">Základní<br><em>informace</em></h1>
+    <p class="setup-sub">Vyplň info o klientovi a vyber úroveň analýzy. Vše ostatní uděláme společně na schůzce.</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">// JMÉNO / NÁZEV FIRMY</label>
+        <input class="form-input" id="clientName" type="text" placeholder="Jméno klienta nebo název firmy...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">// DATUM SCHŮZKY</label>
+        <input class="form-input" id="meetingDate" type="date">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">// OBOR PODNIKÁNÍ</label>
+      <input class="form-input" id="industry" type="text" placeholder="Obor nebo typ podnikání...">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">// VELIKOST FIRMY</label>
+        <input class="form-input" id="companySize" type="text" placeholder="Živnostník, s.r.o., počet zaměstnanců...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">// LOKALITA</label>
+        <input class="form-input" id="location" type="text" placeholder="Město, kraj, online...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">// WEB (URL)</label>
+        <input class="form-input" id="clientWeb" type="text" placeholder="www.firma.cz">
+      </div>
+      <div class="form-group">
+        <label class="form-label">// SOCIÁLNÍ SÍTĚ</label>
+        <input class="form-input" id="clientSocial" type="text" placeholder="Instagram, Facebook, LinkedIn...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">// CO VÍŠ O JEJICH SITUACI</label>
+      <textarea class="form-input" id="situation" rows="3" placeholder="Co je trápí, co chtějí změnit, proč přišli za tebou..."></textarea>
+    </div>
+
+    <div style="margin:2rem 0 1rem">
+      <div class="form-label" style="margin-bottom:1rem">// ÚROVEŇ ANALÝZY</div>
+      <div class="level-selector">
+        <div class="level-card selected" id="levelLight" onclick="selectLevel('light')">
+          <div class="level-tag">// VARIANTA 01</div>
+          <div class="level-name">Light</div>
+          <div class="level-desc">Rychlá schůzka. Základní přehled situace klienta. Výstup 5 stran.</div>
+          <div class="level-count">15 otázek · ~45 min</div>
+        </div>
+        <div class="level-card" id="levelProfi" onclick="selectLevel('profi')">
+          <div class="level-tag">// VARIANTA 02</div>
+          <div class="level-name">Profi</div>
+          <div class="level-desc">Hloubková analýza. Kompletní datový obraz byznysu. Výstup 30 stran.</div>
+          <div class="level-count">60 otázek · ~90 min</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startGuide()">Spustit průvodce →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- GUIDE SCREEN -->
+<!-- ═══════════════════════════════════ -->
+<div class="screen" id="guideScreen">
+  <div class="hdr">
+    <div class="hdr-brand">CLA<span>R</span>IX</div>
+    <div class="hdr-info" id="guideHdrInfo">// PRŮVODCE SCHŮZKOU</div>
+    <button class="hdr-back" onclick="goSetup()">← Nastavení</button>
+  </div>
+  <div class="guide-layout">
+    <!-- Sidebar -->
+    <div class="guide-sidebar">
+      <div class="timer-box">
+        <div class="timer-label">// ČAS SCHŮZKY</div>
+        <div class="timer-display" id="timerDisplay">00:00</div>
+        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+      </div>
+      <div class="score-box">
+        <div class="score-label">// POTENCIÁL KLIENTA</div>
+        <div class="score-val" id="sidebarScore">—</div>
+        <div class="score-bar"><div class="score-fill" id="sidebarScoreFill" style="width:0%"></div></div>
+      </div>
+      <div class="progress-box">
+        <div class="progress-label">
+          <span>// VYPLNĚNOST</span>
+          <span id="progressText">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <div id="sidebarCats"></div>
+    </div>
+    <!-- Main -->
+    <div class="guide-main" id="guideMain"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- SUMMARY SCREEN -->
+<!-- ═══════════════════════════════════ -->
+<div class="screen" id="summaryScreen">
+  <div class="hdr">
+    <div class="hdr-brand">CLA<span>R</span>IX</div>
+    <div class="hdr-info">// SOUHRN SCHŮZKY</div>
+    <button class="hdr-back" onclick="showScreen('guideScreen')">← Průvodce</button>
+  </div>
+  <div class="summary-body">
+    <div class="summary-hero">
+      <div class="summary-title">Schůzka dokončena</div>
+      <div class="summary-client" id="summaryClient"></div>
+      <div class="summary-stats" id="summaryStats"></div>
+    </div>
+    <div class="score-card" id="scoreCard"></div>
+    <div class="next-meeting">
+      <div>
+        <div class="next-label">// DATUM DALŠÍ SCHŮZKY</div>
+        <input class="next-date-input" id="nextMeeting" type="date">
+      </div>
+      <div style="flex:1">
+        <div class="next-label">// POZNÁMKA</div>
+        <input class="next-note-input" id="nextNote" placeholder="Téma druhé schůzky, co připravit...">
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn-action btn-pdf" onclick="generatePDF()">📄 Vytvořit PDF & uložit</button>
+      <button class="btn-action btn-analyze" onclick="copyForAnalysis()">→ Generovat analýzu</button>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+<script>
+
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+let currentType = 'stavajici';
+let currentLevel = 'light';
+let currentCat = 0;
+let answers = {};
+let notes = {};
+let timerInterval = null;
+let timerSeconds = 0;
+let timerMax = 0;
+
+// ═══════════════════════════════════
+// QUESTIONS DATABASE
+// ═══════════════════════════════════
+const QUESTIONS = {
+  stavajici: {
+    light: [
+      {
+        cat: 'Základní přehled',
+        desc: 'Pochopení aktuální situace firmy a jejích výsledků.',
+        questions: [
+          'Jak dlouho firma funguje a jak byste popsal(a) její historii?',
+          'Jaký je váš hlavní produkt nebo služba a co vás odlišuje od konkurence?',
+          'Jak vypadají vaše výsledky za poslední rok — rostete, stagnujete nebo klesáte?',
+          'Co považujete za největší problém nebo brzdu růstu?',
+          'Kdo jsou vaši hlavní konkurenti a jak se s nimi srovnáváte?',
+        ]
+      },
+      {
+        cat: 'Zákazníci',
+        desc: 'Kdo jsou vaši zákazníci a jak je získáváte.',
+        questions: [
+          'Kdo je váš typický zákazník — věk, profese, lokalita?',
+          'Jak zákazníci vaši firmu nacházejí?',
+          'Máte opakující se zákazníky nebo převládají jednorázové nákupy?',
+          'Co zákazníci nejvíce chválí a na co si stěžují?',
+        ]
+      },
+      {
+        cat: 'Online přítomnost',
+        desc: 'Digitální stopa firmy a její aktuální stav.',
+        questions: [
+          'Máte web? Jak vypadá a kdy byl naposledy aktualizován?',
+          'Jste aktivní na sociálních sítích? Na kterých a jak?',
+          'Jak vás najdou zákazníci na Googlu?',
+        ]
+      },
+      {
+        cat: 'Cíle',
+        desc: 'Co chcete změnit a kam směřujete.',
+        questions: [
+          'Co chcete primárně změnit nebo zlepšit?',
+          'Jaký je váš cíl pro příštích 12 měsíců?',
+          'Co je největší překážka která vám brání růst?',
+          'Kolik jste ochotni investovat do změn?',
+        ]
+      },
+    ],
+    profi: [
+      {
+        cat: 'Historie a vize',
+        desc: 'Základ byznysu, jeho vývoj a směřování.',
+        questions: [
+          'Jak firma vznikla a co byl původní záměr?',
+          'Jak se byznys vyvíjel od začátku do dnes?',
+          'Jaká byla dosud největší výzva a jak jste ji překonali?',
+          'Jaká je vaše vize firmy za 5 let?',
+        ]
+      },
+      {
+        cat: 'Produkt a služby',
+        desc: 'Co nabízíte, jak to funguje a co plánujete.',
+        questions: [
+          'Popište přesně váš hlavní produkt nebo službu.',
+          'Co vás odlišuje od konkurence — proč zákazník vybere vás?',
+          'Jaké jsou vaše nejziskovější produkty nebo služby?',
+          'Plánujete rozšíření nabídky nebo nové produkty?',
+        ]
+      },
+      {
+        cat: 'Zákazníci a trh',
+        desc: 'Kdo kupuje, jak a proč.',
+        questions: [
+          'Kdo je váš ideální zákazník — detailně popište profil?',
+          'Jak zákazníci firmu nacházejí a co je přesvědčí ke koupi?',
+          'Jaký je průměrný objednávka nebo zakázka v Kč?',
+          'Jaký je poměr nových vs. opakujících se zákazníků?',
+        ]
+      },
+      {
+        cat: 'Konkurence',
+        desc: 'Kdo jsou konkurenti a jak se s nimi srovnáváte.',
+        questions: [
+          'Jmenujte 3-5 hlavních konkurentů.',
+          'V čem jsou konkurenti lepší než vy?',
+          'V čem jste lepší než konkurenti?',
+          'Jak se vaše ceny srovnávají s trhem?',
+        ]
+      },
+      {
+        cat: 'Financie',
+        desc: 'Finanční zdraví a výkonnost byznysu.',
+        questions: [
+          'Jaký byl obrat za poslední rok?',
+          'Jaká je přibližná marže — ziskovost byznysu?',
+          'Jaké jsou hlavní nákladové položky?',
+          'Máte sezónní výkyvy — kdy je nejlepší a nejhorší měsíc?',
+        ]
+      },
+      {
+        cat: 'Tým a provoz',
+        desc: 'Lidé, procesy a každodenní fungování.',
+        questions: [
+          'Kolik lidí v týmu máte a jak jsou rozdělené role?',
+          'Co by se stalo kdybyste vy osobně vypadli z provozu na měsíc?',
+          'Jaké procesy jsou zdlouhavé nebo neefektivní?',
+          'Máte systémy a nástroje pro řízení byznysu — CRM, účetnictví, komunikace?',
+        ]
+      },
+      {
+        cat: 'Online a marketing',
+        desc: 'Digitální přítomnost a způsob získávání zákazníků.',
+        questions: [
+          'Jak vypadá váš web a kdy byl naposledy aktualizován?',
+          'Na kterých sociálních sítích jste aktivní a jak?',
+          'Investujete do reklamy? Do jaké a kolik měsíčně?',
+          'Jak byste ohodnotili svoji online viditelnost na škále 1-10?',
+        ]
+      },
+      {
+        cat: 'Silné stránky',
+        desc: 'Co funguje dobře a na čem stavíte.',
+        questions: [
+          'Co je podle vás největší síla vašeho byznysu?',
+          'Na co jsou zákazníci nejpozitivnější — co chválí?',
+          'Jaká dovednost nebo znalost vás odlišuje od ostatních?',
+          'Co by zákazníkům nejvíce chybělo kdybyste přestali fungovat?',
+        ]
+      },
+      {
+        cat: 'Slabé stránky',
+        desc: 'Co nefunguje a kde jsou mezery.',
+        questions: [
+          'Co je podle vás největší slabina byznysu?',
+          'Na co si zákazníci nejčastěji stěžují?',
+          'Kde ve firmě nejvíce "hoří" — co vás stojí nejvíc energie?',
+          'Co byste dělali jinak kdybyste začínali znovu?',
+        ]
+      },
+      {
+        cat: 'Příležitosti',
+        desc: 'Co zatím nevyužíváte a kde je potenciál.',
+        questions: [
+          'Jaké příležitosti na trhu vidíte a nevyužíváte?',
+          'Je nějaký segment zákazníků který neoslovujete a mohl by fungovat?',
+          'Jsou nové trendy v oboru které byste mohli využít?',
+          'Napadají vás produkty nebo služby které byste mohli přidat?',
+        ]
+      },
+      {
+        cat: 'Rizika',
+        desc: 'Co ohrožuje byznys a jak jste připraveni.',
+        questions: [
+          'Jaká jsou podle vás největší rizika pro byznys v příštím roce?',
+          'Jak závislý je byznys na klíčových dodavatelích nebo partnerech?',
+          'Co by se stalo kdyby přišel silný nový konkurent?',
+          'Jak jste finančně připraveni na výpadek příjmů 2-3 měsíce?',
+        ]
+      },
+      {
+        cat: 'Zákazníci — hloubka',
+        desc: 'Detailní pochopení zákaznické základny.',
+        questions: [
+          'Jak získáváte recenze a doporučení od zákazníků?',
+          'Víte proč zákazníci odcházejí ke konkurenci?',
+          'Máte věrnostní program nebo způsob udržení zákazníků?',
+          'Jaké je NPS — doporučili by vás zákazníci přátelům?',
+        ]
+      },
+      {
+        cat: 'Investice a rozvoj',
+        desc: 'Ochota a možnosti investovat do změn.',
+        questions: [
+          'Kolik jste ochotni investovat do změn a rozvoje?',
+          'Máte přístup k financování — úvěr, investor, vlastní prostředky?',
+          'Jaké investice jste udělali v posledních 2 letech?',
+          'Co by přineslo největší návratnost investice?',
+        ]
+      },
+      {
+        cat: 'Cíle a priority',
+        desc: 'Kam chcete dojít a co je nejdůležitější.',
+        questions: [
+          'Jaký je váš hlavní cíl pro příštích 12 měsíců?',
+          'Jak byste vypadal úspěch za 3 roky?',
+          'Co je absolutní priorita číslo jedna?',
+          'Co vám brání tuto prioritu realizovat hned?',
+        ]
+      },
+      {
+        cat: 'Spolupráce s Clarix',
+        desc: 'Očekávání a zájem o konkrétní výstupy.',
+        questions: [
+          'Co od naší spolupráce nejvíce očekáváte?',
+          'Na kterou oblast se chcete zaměřit prioritně?',
+          'Máte zájem o web, reklamu nebo jiné konkrétní výstupy?',
+          'Do kdy potřebujete první výsledky?',
+        ]
+      },
+    ]
+  },
+  novy: {
+    light: [
+      {
+        cat: 'Nápad a záměr',
+        desc: 'Co chcete dělat a proč.',
+        questions: [
+          'Popište svůj byznys nápad jednou větou.',
+          'Proč chcete dělat právě toto — co vás motivuje?',
+          'Kdy plánujete spustit a jak jste daleko v přípravách?',
+          'Máte k dispozici startovní kapitál — přibližně kolik?',
+          'Testovali jste nápad s někým z potenciálních zákazníků?',
+        ]
+      },
+      {
+        cat: 'Zákazník',
+        desc: 'Pro koho to je a jak ho oslovíte.',
+        questions: [
+          'Kdo je váš ideální zákazník — popište konkrétně.',
+          'Jaký problém zákazníkovi řešíte?',
+          'Jak ho plánujete oslovit — kde zákazníci jsou?',
+        ]
+      },
+      {
+        cat: 'Trh a konkurence',
+        desc: 'Prostředí ve kterém chcete působit.',
+        questions: [
+          'Znáte konkurenty? Kdo dělá něco podobného?',
+          'Proč by zákazník vybral vás místo konkurence?',
+          'V jaké lokalitě chcete působit?',
+        ]
+      },
+      {
+        cat: 'Realizace',
+        desc: 'Praktické kroky a připravenost.',
+        questions: [
+          'Co je největší překážka která vám brání začít hned?',
+          'Jakou formu podnikání plánujete — živnost nebo s.r.o.?',
+          'Budete podnikat sami nebo s partnerem?',
+          'Jaký je váš cíl za první rok?',
+        ]
+      },
+    ],
+    profi: [
+      {
+        cat: 'Nápad a záměr',
+        desc: 'Co, proč a jak jste daleko.',
+        questions: [
+          'Popište svůj byznys nápad co nejpřesněji.',
+          'Proč chcete dělat právě toto — osobní motivace?',
+          'Jak dlouho o tom přemýšlíte a jak daleko jste v přípravách?',
+          'Co vás přesvědčilo že to má smysl realizovat?',
+        ]
+      },
+      {
+        cat: 'Produkt nebo služba',
+        desc: 'Co přesně nabízíte a jak to funguje.',
+        questions: [
+          'Jak přesně funguje váš produkt nebo služba — popište detailně.',
+          'Co je unikátní na vašem řešení — proč je lepší než co je na trhu?',
+          'Jak jste přišli na tuto ideu — odkud pochází?',
+          'Testovali jste nápad s potenciálními zákazníky?',
+        ]
+      },
+      {
+        cat: 'Cílová skupina',
+        desc: 'Kdo je váš zákazník — detailní profil.',
+        questions: [
+          'Kdo je váš ideální zákazník — věk, profese, příjem, lokalita?',
+          'Jaký problém zákazníkovi přesně řešíte a jak ho to trápí?',
+          'Kde se zákazníci pohybují — online i offline?',
+          'Jak se rozhodují o nákupu a co je přesvědčí?',
+        ]
+      },
+      {
+        cat: 'Trh a poptávka',
+        desc: 'Jak velký je trh a zda je o to zájem.',
+        questions: [
+          'Odhadujete jak velký je trh pro vaši službu?',
+          'Roste, stagnuje nebo klesá poptávka v tomto oboru?',
+          'Jsou nějaké trendy které vašemu byznysu nahrávají?',
+          'Jak jste ověřili že o to zájem je?',
+        ]
+      },
+      {
+        cat: 'Konkurence',
+        desc: 'Kdo dělá něco podobného a kde jsou mezery.',
+        questions: [
+          'Kdo jsou přímí konkurenti — jmenujte konkrétně.',
+          'Jak fungují konkurenti a v čem jsou dobří?',
+          'Kde vidíte mezery nebo slabiny konkurence?',
+          'Proč zákazník vybere vás místo stávající nabídky?',
+        ]
+      },
+      {
+        cat: 'Finanční plán',
+        desc: 'Peníze na start a výhled do budoucna.',
+        questions: [
+          'Kolik máte startovního kapitálu k dispozici?',
+          'Jaké jsou odhadované náklady na rozjezd?',
+          'Za jakou cenu budete prodávat a proč?',
+          'Kdy odhadujete dosáhnout bodu zvratu?',
+        ]
+      },
+      {
+        cat: 'Rizika',
+        desc: 'Co může jít špatně a jak jste připraveni.',
+        questions: [
+          'Jaká jsou největší rizika vašeho záměru?',
+          'Co se stane když nenajdete zákazníky v prvních 3 měsících?',
+          'Máte záložní plán nebo zdroj příjmů?',
+          'Na čem závisí úspěch nejvíce — co musí fungovat?',
+        ]
+      },
+      {
+        cat: 'Právní a provozní',
+        desc: 'Formální stránka podnikání.',
+        questions: [
+          'Jakou formu podnikání plánujete — živnost, s.r.o.?',
+          'Potřebujete speciální povolení, licenci nebo certifikaci?',
+          'Máte dodavatele, prostory nebo technologie zajištěné?',
+          'Budete podnikat sami nebo potřebujete tým?',
+        ]
+      },
+      {
+        cat: 'Digitální strategie',
+        desc: 'Jak budete viditelní online.',
+        questions: [
+          'Máte již doménu, web nebo sociální sítě?',
+          'Na které platformy se chcete zaměřit?',
+          'Kolik plánujete investovat do online marketingu?',
+          'Jak si představujete získání prvních zákazníků přes internet?',
+        ]
+      },
+      {
+        cat: 'První zákazníci',
+        desc: 'Jak získáte prvního platícího zákazníka.',
+        questions: [
+          'Znáte osobně někoho kdo by službu mohl potřebovat nebo doporučit?',
+          'Jste ochotni nabídnout prvním zákazníkům výhodné podmínky výměnou za zpětnou vazbu?',
+          'Jak plánujete získat první recenze a reference?',
+          'Jaký je váš plán na prvních 30 dní po spuštění?',
+        ]
+      },
+      {
+        cat: 'Cenová strategie',
+        desc: 'Jak nastavit cenu aby byznys fungoval.',
+        questions: [
+          'Jak jste přišli na cenu — konkurence, náklady nebo hodnota?',
+          'Plánujete různé cenové varianty nebo balíčky?',
+          'Jak budou zákazníci platit — jednorázově, předplatné, po zakázkách?',
+          'Máte marži která pokryje náklady a přinese zisk?',
+        ]
+      },
+      {
+        cat: 'Časový plán',
+        desc: 'Kdy a v jakém tempu chcete růst.',
+        questions: [
+          'Kdy plánujete spustit byznys?',
+          'Co je největší překážka před spuštěním?',
+          'Jaký je cíl pro první, třetí a šestý měsíc?',
+          'Kdy chcete přijmout prvního zaměstnance nebo spolupracovníka?',
+        ]
+      },
+      {
+        cat: 'SWOT',
+        desc: 'Silné stránky, slabiny, příležitosti, hrozby.',
+        questions: [
+          'Jaké jsou vaše největší silné stránky jako podnikatele?',
+          'Kde vidíte své slabiny nebo oblasti kde potřebujete pomoc?',
+          'Jaké příležitosti na trhu zatím nikdo nevyužívá?',
+          'Co zvenku může váš byznys ohrozit?',
+        ]
+      },
+      {
+        cat: 'Sezónnost',
+        desc: 'Kdy byznys vydělává a kdy ne.',
+        questions: [
+          'Je váš byznys sezónní — kdy bude nejvyšší a nejnižší poptávka?',
+          'Jak plánujete překlenout slabší měsíce?',
+          'Jsou v oboru klíčové události nebo sezóny?',
+          'Máte finanční rezervu na slabší období?',
+        ]
+      },
+      {
+        cat: 'Očekávání od Clarix',
+        desc: 'Co od analýzy a spolupráce chcete.',
+        questions: [
+          'Co je vaše hlavní otázka — na co chcete znát odpověď?',
+          'Jaká oblast vás zajímá nejvíce — trh, konkurence, finance?',
+          'Máte zájem o realizaci webu nebo digitálního marketingu?',
+          'Do kdy potřebujete výsledky analýzy?',
+        ]
+      },
+    ]
+  }
+};
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goHome() { showScreen('homeScreen'); stopTimer(); }
+function goSetup() { showScreen('setupScreen'); stopTimer(); }
+
+function selectType(type) {
+  currentType = type;
+  document.getElementById('setupHdrInfo').textContent = type === 'stavajici' ? '// STÁVAJÍCÍ BYZNYS' : '// NOVÝ BYZNYS';
+  showScreen('setupScreen');
+  // Set today's date
+  document.getElementById('meetingDate').valueAsDate = new Date();
+}
+
+function selectLevel(level) {
+  currentLevel = level;
+  document.getElementById('levelLight').classList.toggle('selected', level === 'light');
+  document.getElementById('levelProfi').classList.toggle('selected', level === 'profi');
+}
+
+// ═══════════════════════════════════
+// START GUIDE
+// ═══════════════════════════════════
+function startGuide() {
+  const name = document.getElementById('clientName').value.trim();
+  const industry = document.getElementById('industry').value.trim();
+  if(!name || !industry) { alert('Vyplň prosím jméno klienta a obor.'); return; }
+
+  answers = {}; notes = {}; currentCat = 0;
+  const typeLabel = currentType === 'stavajici' ? 'STÁVAJÍCÍ BYZNYS' : 'NOVÝ BYZNYS';
+  const levelLabel = currentLevel === 'light' ? 'LIGHT' : 'PROFI';
+  document.getElementById('guideHdrInfo').textContent = `// ${typeLabel} · ${levelLabel}`;
+
+  buildSidebar();
+  renderCategory(0);
+  showScreen('guideScreen');
+  startTimer(currentLevel === 'light' ? 45 : 90);
+}
+
+// ═══════════════════════════════════
+// BUILD GUIDE
+// ═══════════════════════════════════
+function getCats() { return QUESTIONS[currentType][currentLevel]; }
+
+function buildSidebar() {
+  const cats = getCats();
+  const html = cats.map((cat, i) => `
+    <div class="sidebar-section">
+      <div class="sidebar-cat ${i===0?'active':''}" id="sidebarCat${i}" onclick="renderCategory(${i})">
+        <span>${String(i+1).padStart(2,'0')} · ${cat.cat}</span>
+        <span class="cat-check" id="catCheck${i}">○</span>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('sidebarCats').innerHTML = html;
+}
+
+function renderCategory(idx) {
+  const cats = getCats();
+  currentCat = idx;
+
+  // Update sidebar active
+  document.querySelectorAll('.sidebar-cat').forEach((el,i) => {
+    el.classList.toggle('active', i === idx);
+  });
+
+  const cat = cats[idx];
+  let qNum = 0;
+  cats.slice(0, idx).forEach(c => qNum += c.questions.length);
+
+  const qHTML = cat.questions.map((q, qi) => {
+    const id = `${idx}_${qi}`;
+    const hasAnswer = answers[id] && answers[id].trim();
+    return `
+      <div class="q-item ${hasAnswer?'answered':''}" id="qitem_${id}">
+        <div class="q-top">
+          <span class="q-num">${String(qNum+qi+1).padStart(2,'0')}</span>
+          <div class="q-text">${q}</div>
+        </div>
+        <div class="q-bottom">
+          <textarea class="q-answer" id="ans_${id}" placeholder="Odpověď klienta..." onInput="saveAnswer('${id}')">${answers[id]||''}</textarea>
+          <span class="q-note-toggle" onclick="toggleNote('${id}')">+ přidat poznámku</span>
+          <textarea class="q-note ${notes[id]?'visible':''}" id="note_${id}" placeholder="Tvoje interní poznámka..." onInput="saveNote('${id}')">${notes[id]||''}</textarea>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('guideMain').innerHTML = `
+    <div class="cat-header">
+      <div class="cat-num">// KATEGORIE ${String(idx+1).padStart(2,'0')} / ${cats.length}</div>
+      <div class="cat-title">${cat.cat}</div>
+      <div class="cat-desc">${cat.desc}</div>
+    </div>
+    ${qHTML}
+    <div class="cat-nav">
+      <button class="btn-nav" onclick="prevCat()" ${idx===0?'disabled':''}>← Předchozí</button>
+      <span style="font-family:'DM Mono',monospace;font-size:.6rem;color:var(--dim)">${idx+1} / ${cats.length}</span>
+      ${idx < cats.length-1 
+        ? `<button class="btn-nav primary" onclick="nextCat()">Další →</button>`
+        : `<button class="btn-nav primary" onclick="showSummary()">Dokončit ✓</button>`
+      }
+    </div>
+  `;
+  // Scroll to top of guide content
+  const guideMain = document.getElementById('guideMain');
+  if(guideMain) guideMain.scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+function prevCat() { if(currentCat > 0) renderCategory(currentCat-1); }
+function nextCat() { const cats=getCats(); if(currentCat<cats.length-1) renderCategory(currentCat+1); }
+
+function saveAnswer(id) {
+  answers[id] = document.getElementById('ans_'+id).value;
+  const hasAnswer = answers[id].trim().length > 0;
+  const qitem = document.getElementById('qitem_'+id);
+  if(qitem) qitem.classList.toggle('answered', hasAnswer);
+  updateProgress();
+  updateScore();
+  updateCatCheck();
+}
+
+function saveNote(id) {
+  notes[id] = document.getElementById('note_'+id).value;
+}
+
+function toggleNote(id) {
+  const note = document.getElementById('note_'+id);
+  note.classList.toggle('visible');
+}
+
+function updateProgress() {
+  const cats = getCats();
+  const total = cats.reduce((s,c) => s+c.questions.length, 0);
+  const filled = Object.values(answers).filter(v => v && v.trim()).length;
+  const pct = Math.round((filled/total)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = pct+'%';
+}
+
+function updateCatCheck() {
+  const cats = getCats();
+  cats.forEach((cat, idx) => {
+    const allAnswered = cat.questions.every((q, qi) => {
+      const id = `${idx}_${qi}`;
+      return answers[id] && answers[id].trim();
+    });
+    const checkEl = document.getElementById('catCheck'+idx);
+    const catEl = document.getElementById('sidebarCat'+idx);
+    if(checkEl) {
+      checkEl.textContent = allAnswered ? '✓' : '○';
+      if(catEl) catEl.classList.toggle('done', allAnswered);
+    }
+  });
+}
+
+// ═══════════════════════════════════
+// SCORE
+// ═══════════════════════════════════
+function updateScore() {
+  const score = calculateScore();
+  document.getElementById('sidebarScore').textContent = score+'/10';
+  document.getElementById('sidebarScoreFill').style.width = (score*10)+'%';
+}
+
+function calculateScore() {
+  const cats = getCats();
+  const total = cats.reduce((s,c) => s+c.questions.length, 0);
+  const filled = Object.values(answers).filter(v => v && v.trim()).length;
+  const completeness = filled/total;
+
+  // Score factors based on answer content
+  let score = Math.round(completeness * 6); // base 0-6 from completeness
+
+  // Bonus points from answer content
+  const allAnswers = Object.values(answers).join(' ').toLowerCase();
+  if(allAnswers.includes('růst') || allAnswers.includes('expand') || allAnswers.includes('rozvoj')) score += 1;
+  if(allAnswers.includes('zákazník') && allAnswers.length > 200) score += 1;
+  if(allAnswers.includes('web') || allAnswers.includes('online') || allAnswers.includes('reklam')) score += 1;
+  if(allAnswers.includes('investov') || allAnswers.includes('capital') || allAnswers.includes('peníze')) score += 1;
+
+  return Math.min(10, Math.max(1, score));
+}
+
+function getScoreComment(score) {
+  if(score >= 9) return 'Výjimečný potenciál. Klient je motivovaný, má zdroje a jasnou vizi. Prioritní případ pro Profi analýzu.';
+  if(score >= 7) return 'Silný potenciál. Klient ví co chce a má prostředky ke změně. Doporučena komplexní analýza.';
+  if(score >= 5) return 'Střední potenciál. Zájem je, ale chybí konkrétnost nebo zdroje. Vhodný pro Light analýzu s dalšími kroky.';
+  if(score >= 3) return 'Nízký potenciál prozatím. Klient teprve zjišťuje možnosti. Nabídni konzultaci bez závazků.';
+  return 'Příliš málo dat pro hodnocení. Doplň více odpovědí.';
+}
+
+// ═══════════════════════════════════
+// TIMER
+// ═══════════════════════════════════
+function startTimer(minutes) {
+  stopTimer();
+  timerSeconds = 0;
+  timerMax = minutes * 60;
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function stopTimer() {
+  if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds/60);
+  const s = timerSeconds%60;
+  const display = document.getElementById('timerDisplay');
+  const fill = document.getElementById('timerFill');
+  if(!display) return;
+  display.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  if(timerMax > 0) {
+    const pct = Math.min(100, (timerSeconds/timerMax)*100);
+    if(fill) {
+      fill.style.width = pct+'%';
+      if(pct > 90) { fill.className='timer-fill urgent'; display.className='timer-display urgent'; }
+      else if(pct > 75) { fill.className='timer-fill warning'; display.className='timer-display warning'; }
+      else { fill.className='timer-fill'; display.className='timer-display'; }
+    }
+  }
+}
+
+// ═══════════════════════════════════
+// SUMMARY
+// ═══════════════════════════════════
+function showSummary() {
+  stopTimer();
+  const cats = getCats();
+  const total = cats.reduce((s,c) => s+c.questions.length, 0);
+  const filled = Object.values(answers).filter(v => v && v.trim()).length;
+  const score = calculateScore();
+  const name = document.getElementById('clientName').value;
+  const industry = document.getElementById('industry').value;
+  const date = document.getElementById('meetingDate').value;
+  const minutes = Math.floor(timerSeconds/60);
+
+  document.getElementById('summaryClient').innerHTML = `<strong>${name}</strong> · ${industry} · ${date}`;
+  document.getElementById('summaryStats').innerHTML = `
+    <div class="stat-box"><div class="stat-n">${filled}</div><div class="stat-l">Vyplněných odpovědí</div></div>
+    <div class="stat-box"><div class="stat-n">${total}</div><div class="stat-l">Celkem otázek</div></div>
+    <div class="stat-box"><div class="stat-n">${Math.round((filled/total)*100)}%</div><div class="stat-l">Vyplněnost</div></div>
+    <div class="stat-box"><div class="stat-n">${minutes}'</div><div class="stat-l">Délka schůzky</div></div>
+  `;
+
+  // Score factors
+  const allAnswers = Object.values(answers).join(' ').toLowerCase();
+  const factors = [
+    {name:'Vyplněnost', val: filled>=total*0.8?'Výborná':filled>=total*0.5?'Dobrá':'Nízká', cls: filled>=total*0.8?'good':filled>=total*0.5?'mid':'bad'},
+    {name:'Motivace', val: allAnswers.includes('růst')||allAnswers.includes('expan')?'Vysoká':'Střední', cls: allAnswers.includes('růst')?'good':'mid'},
+    {name:'Online připravenost', val: allAnswers.includes('web')||allAnswers.includes('online')?'Ano':'Chybí', cls: allAnswers.includes('web')?'good':'bad'},
+    {name:'Investiční zájem', val: allAnswers.includes('investov')||allAnswers.includes('peníze')?'Ano':'Nejasný', cls: allAnswers.includes('investov')?'good':'mid'},
+  ];
+
+  document.getElementById('scoreCard').innerHTML = `
+    <div class="score-card-title">// POTENCIÁL KLIENTA — POUZE PRO INTERNÍ POUŽITÍ</div>
+    <div class="score-main">
+      <div class="score-circle"><div class="score-number">${score}/10</div></div>
+      <div class="score-factors">
+        ${factors.map(f => `<div class="score-factor"><span class="score-factor-name">${f.name}</span><span class="score-factor-val ${f.cls}">${f.val}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="score-comment">${getScoreComment(score)}</div>
+  `;
+
+  // Set next meeting date (+ 7 days)
+  const nextDate = new Date();
+  nextDate.setDate(nextDate.getDate()+7);
+  document.getElementById('nextMeeting').valueAsDate = nextDate;
+
+  showScreen('summaryScreen');
+}
+
+// ═══════════════════════════════════
+// PDF GENERATION
+// ═══════════════════════════════════
+function generatePDF() {
+  const name = document.getElementById('clientName').value;
+  const industry = document.getElementById('industry').value;
+  const date = document.getElementById('meetingDate').value;
+  const size = document.getElementById('companySize').value;
+  const location = document.getElementById('location').value;
+  const situation = document.getElementById('situation').value;
+  const nextMeeting = document.getElementById('nextMeeting').value;
+  const nextNote = document.getElementById('nextNote').value;
+  const cats = getCats();
+  const typeLabel = currentType === 'stavajici' ? 'Stávající byznys' : 'Nový byznys';
+  const levelLabel = currentLevel === 'light' ? 'Light' : 'Profi';
+  const score = calculateScore();
+
+  let html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <style>
+    body{font-family:Arial,sans-serif;color:#111;max-width:900px;margin:0 auto;padding:2rem;font-size:13px}
+    .header{background:#080C10;color:white;padding:2rem;margin-bottom:2rem}
+    .logo{font-size:2rem;font-weight:900;letter-spacing:.1em;color:white}
+    .logo span{color:#5EAEE8}
+    .sub{font-size:.7rem;letter-spacing:.3em;color:#8BA8C0;margin-top:.3rem}
+    .meta{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1.5rem}
+    .meta-item{background:rgba(255,255,255,.05);padding:.5rem .75rem}
+    .meta-label{font-size:.6rem;letter-spacing:.15em;color:#8BA8C0}
+    .meta-val{color:white;font-size:.85rem;margin-top:.2rem}
+    .cat-header{background:#0F1620;color:white;padding:.75rem 1rem;margin:1.5rem 0 .75rem;border-left:3px solid #5EAEE8}
+    .cat-title{font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+    .q-block{margin-bottom:1rem;border:1px solid #e8e8e8;padding:.75rem}
+    .q-num{font-size:.6rem;color:#5EAEE8;font-family:monospace;margin-bottom:.25rem}
+    .q-text{font-weight:600;margin-bottom:.4rem;color:#222}
+    .q-ans{background:#f8f9fa;padding:.5rem;min-height:2rem;color:#333;border-left:2px solid #5EAEE8}
+    .q-note{background:#fff8e1;padding:.4rem;margin-top:.3rem;font-size:.8rem;color:#856404;border-left:2px solid #f0a500}
+    .score-box{background:#0F1620;color:white;padding:1.5rem;margin-bottom:1.5rem;text-align:center}
+    .score-num{font-size:3rem;font-weight:900;color:#5EAEE8}
+    .score-label{font-size:.7rem;letter-spacing:.2em;color:#8BA8C0}
+    .score-comment{font-size:.85rem;color:#C0C8D4;margin-top:.75rem;font-style:italic}
+    .footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #eee;font-size:.7rem;color:#999;text-align:center}
+    @media print{body{padding:.5rem}.header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body>
+  <div class="header">
+    <div class="logo">CLA<span>R</span>IX</div>
+    <div class="sub">ANALYTICKÉ & DESIGNOVÉ STUDIO · CLARIX.CZ</div>
+    <div class="meta">
+      <div class="meta-item"><div class="meta-label">KLIENT</div><div class="meta-val">${name}</div></div>
+      <div class="meta-item"><div class="meta-label">OBOR</div><div class="meta-val">${industry}</div></div>
+      <div class="meta-item"><div class="meta-label">DATUM SCHŮZKY</div><div class="meta-val">${date}</div></div>
+      <div class="meta-item"><div class="meta-label">TYP ANALÝZY</div><div class="meta-val">${typeLabel} · ${levelLabel}</div></div>
+      ${size?`<div class="meta-item"><div class="meta-label">VELIKOST FIRMY</div><div class="meta-val">${size}</div></div>`:''}
+      ${location?`<div class="meta-item"><div class="meta-label">LOKALITA</div><div class="meta-val">${location}</div></div>`:''}
+      ${document.getElementById('clientWeb').value?`<div class="meta-item"><div class="meta-label">WEB</div><div class="meta-val">${document.getElementById('clientWeb').value}</div></div>`:''}
+      ${document.getElementById('clientSocial').value?`<div class="meta-item"><div class="meta-label">SOCIÁLNÍ SÍTĚ</div><div class="meta-val">${document.getElementById('clientSocial').value}</div></div>`:''}
+    </div>
+  </div>`;
+
+  if(situation) {
+    html += `<div style="background:#f8f9fa;padding:1rem;margin-bottom:1.5rem;border-left:3px solid #5EAEE8">
+      <div style="font-size:.6rem;letter-spacing:.15em;color:#5EAEE8;margin-bottom:.3rem">SITUACE KLIENTA</div>
+      <div>${situation}</div></div>`;
+  }
+
+  html += `<div class="score-box">
+    <div class="score-label">POTENCIÁL KLIENTA — INTERNÍ HODNOCENÍ</div>
+    <div class="score-num">${score}/10</div>
+    <div class="score-comment">${getScoreComment(score)}</div>
+  </div>`;
+
+  let qNum = 0;
+  cats.forEach((cat, idx) => {
+    html += `<div class="cat-header"><div class="cat-title">${String(idx+1).padStart(2,'0')} · ${cat.cat}</div></div>`;
+    cat.questions.forEach((q, qi) => {
+      const id = `${idx}_${qi}`;
+      const ans = answers[id] || '';
+      const note = notes[id] || '';
+      html += `<div class="q-block">
+        <div class="q-num">OTÁZKA ${String(++qNum).padStart(2,'0')}</div>
+        <div class="q-text">${q}</div>
+        <div class="q-ans">${ans || '<em style="color:#999">Bez odpovědi</em>'}</div>
+        ${note?`<div class="q-note">📝 ${note}</div>`:''}
+      </div>`;
+    });
+  });
+
+  if(nextMeeting) {
+    html += `<div style="background:#0F1620;color:white;padding:1rem;margin-top:2rem">
+      <div style="font-size:.6rem;letter-spacing:.15em;color:#5EAEE8;margin-bottom:.3rem">DATUM DALŠÍ SCHŮZKY</div>
+      <div style="font-size:1.1rem;font-weight:700">${nextMeeting}</div>
+      ${nextNote?`<div style="color:#8BA8C0;margin-top:.4rem;font-size:.85rem">${nextNote}</div>`:''}
+    </div>`;
+  }
+
+  html += `<div class="footer">© Clarix — Analytické a designové studio · clarix.cz · +420 720 396 024<br>Dokument je důvěrný a určen pouze pro interní použití.</div>
+  </body></html>`;
+
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(() => win.print(), 500);
+}
+
+// ═══════════════════════════════════
+// COPY FOR ANALYSIS
+// ═══════════════════════════════════
+function copyForAnalysis() {
+  const name = document.getElementById('clientName').value;
+  const industry = document.getElementById('industry').value;
+  const date = document.getElementById('meetingDate').value;
+  const size = document.getElementById('companySize').value;
+  const location = document.getElementById('location').value;
+  const situation = document.getElementById('situation').value;
+  const cats = getCats();
+  const typeLabel = currentType === 'stavajici' ? 'STÁVAJÍCÍ BYZNYS' : 'NOVÝ BYZNYS';
+  const levelLabel = currentLevel.toUpperCase();
+
+  let text = `CLARIX — ANALYTICKÝ PRŮVODCE\n`;
+  text += `═══════════════════════════════════\n`;
+  text += `Klient: ${name}\nObor: ${industry}\nDatum: ${date}\n`;
+  if(size) text += `Velikost: ${size}\n`;
+  if(location) text += `Lokalita: ${location}\n`;
+  text += `Typ: ${typeLabel} · ${levelLabel}\n`;
+  const web = document.getElementById('clientWeb').value;
+  const social = document.getElementById('clientSocial').value;
+  if(web) text += `Web: ${web}\n`;
+  if(social) text += `Sociální sítě: ${social}\n`;
+  if(situation) text += `\nSituace klienta:\n${situation}\n`;
+  text += `\n═══════════════════════════════════\n\n`;
+
+  let qNum = 0;
+  cats.forEach((cat, idx) => {
+    text += `\n── ${String(idx+1).padStart(2,'0')}. ${cat.cat.toUpperCase()} ──\n`;
+    cat.questions.forEach((q, qi) => {
+      const id = `${idx}_${qi}`;
+      const ans = answers[id] || '';
+      const note = notes[id] || '';
+      text += `\nO${String(++qNum).padStart(2,'0')}: ${q}\n`;
+      if(ans) text += `A: ${ans}\n`;
+      else text += `A: [bez odpovědi]\n`;
+      if(note) text += `📝 Poznámka: ${note}\n`;
+    });
+  });
+
+  text += `\n═══════════════════════════════════\n`;
+  text += `Na základě výše uvedených dat prosím zpracuj kompletní profesionální analýzu.\n`;
+  if(currentType === 'stavajici') {
+    text += `Zaměř se na: silné a slabé stránky, příležitosti, konkurenci, online přítomnost, doporučení pro růst.\n`;
+  } else {
+    text += `Zaměř se na: životaschopnost záměru, analýzu trhu a poptávky, konkurenci, finanční předpoklady, rizika a doporučení.\n`;
+  }
+  text += `Výstup by měl být strukturovaný, datový a obsahovat konkrétní doporučení.`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    alert('✓ Zkopírováno!\n\nOtevři nový chat v Claude, vlož text a napiš: "Zpracuj kompletní analýzu"');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✓ Zkopírováno!');
+  });
+}
+
+// ═══════════════════════════════════
+// PASSWORD
+// ═══════════════════════════════════
+function checkStudioPass() {
+  if(document.getElementById('passInput').value === '0868') {
+    showScreen('homeScreen');
+  } else {
+    document.getElementById('passErr').style.display = 'block';
+    document.getElementById('passInput').value = '';
+    setTimeout(() => document.getElementById('passInput').focus(), 100);
+  }
+}
+window.addEventListener('load', () => {
+  document.getElementById('passInput').focus();
+});
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+document.getElementById('meetingDate').valueAsDate = new Date();
+
+
+function goBackToSite(){
+  document.getElementById("studioApp").style.display="none";
+  document.getElementById("mainSite").style.display="block";
+}
+</script>
 </body>
 </html>
